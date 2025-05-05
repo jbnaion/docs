@@ -11,6 +11,10 @@
   "navigation": {
     "tabs": [
       {
+        "tab": "API Reference",
+        "openapi": "/api-reference/openapi.json"
+      },
+      {
         "tab": "Guides",
         "groups": [
           {
@@ -53,10 +57,6 @@
             ]
           }
         ]
-      },
-      {
-        "tab": "API Reference",
-        "openapi": "/api-reference/openapi.json"
       }
     ],
     "global": {

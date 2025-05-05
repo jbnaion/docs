@@ -18,25 +18,61 @@
         }
     ],
     "paths": {
-        "/system/live": {
-            "get": {
+        "/reports/image": {
+            "post": {
                 "tags": [
-                    "SYSTEM MANAGEMENT"
+                    "AION REPORTS"
                 ],
-                "summary": "Is Live",
-                "operationId": "is_live_system_live_get",
+                "summary": "Image reports",
+                "operationId": "get_report_reports_image_post",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "object": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "title": "Object"
+                                    }
+                                },
+                                "type": "object",
+                                "required": [
+                                    "object"
+                                ],
+                                "title": "BinaryRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
                 "responses": {
                     "200": {
                         "description": "Successful Response",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/LiveStatus"
+                                    "$ref": "#/components/schemas/ImageReportResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
                                 }
                             }
                         }
                     }
-                }
+                },
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ]
             }
         },
         "/reports/voice": {
@@ -131,61 +167,25 @@
                 ]
             }
         },
-        "/reports/image": {
-            "post": {
+        "/system/live": {
+            "get": {
                 "tags": [
-                    "AION REPORTS"
+                    "SYSTEM MANAGEMENT"
                 ],
-                "summary": "Image reports",
-                "operationId": "get_report_reports_image_post",
-                "requestBody": {
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "properties": {
-                                    "object": {
-                                        "type": "string",
-                                        "format": "binary",
-                                        "title": "Object"
-                                    }
-                                },
-                                "type": "object",
-                                "required": [
-                                    "object"
-                                ],
-                                "title": "BinaryRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
+                "summary": "Is Live",
+                "operationId": "is_live_system_live_get",
                 "responses": {
                     "200": {
                         "description": "Successful Response",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "$ref": "#/components/schemas/ImageReportResponse"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                    "$ref": "#/components/schemas/LiveStatus"
                                 }
                             }
                         }
                     }
-                },
-                "security": [
-                    {
-                        "HTTPBearer": []
-                    }
-                ]
+                }
             }
         }
     },
