@@ -1,217 +1,866 @@
 {
-  "openapi": "3.1.0",
-  "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
-  },
-  "servers": [
-    {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
-  "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          },
-          "required": true
+    "openapi": "3.1.0",
+    "info": {
+        "title": "AIORNOT API",
+        "summary": "\n        Welcome to AI or Not`s documentation, the developer guide to discerning digital authenticity!\n        ",
+        "termsOfService": "https://aiornot.com/terms-of-service",
+        "contact": {
+            "name": "AIORNOT",
+            "url": "https://aiornot.com/",
+            "email": "support@aiornot.com"
         },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
+        "version": "5.0.2"
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
+    "servers": [
+        {
+            "url": "https://prod.ai-or-not.com/v1",
+            "description": "Production environment"
         }
-      }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
+    ],
+    "paths": {
+        "/system/live": {
+            "get": {
+                "tags": [
+                    "SYSTEM MANAGEMENT"
+                ],
+                "summary": "Is Live",
+                "operationId": "is_live_system_live_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/LiveStatus"
+                                }
+                            }
+                        }
+                    }
+                }
             }
-          }
         },
-        "responses": {
-          "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
+        "/reports/voice": {
+            "post": {
+                "tags": [
+                    "AION REPORTS"
+                ],
+                "summary": "Get Voice Report",
+                "operationId": "get_voice_report_reports_voice_post",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Body_get_voice_report_reports_voice_post"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VoiceReportResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ]
             }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          }
+        },
+        "/reports/music": {
+            "post": {
+                "tags": [
+                    "AION REPORTS"
+                ],
+                "summary": "Get Music Report",
+                "operationId": "get_music_report_reports_music_post",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Body_get_music_report_reports_music_post"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MusicReportResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ]
+            }
+        },
+        "/reports/image": {
+            "post": {
+                "tags": [
+                    "AION REPORTS"
+                ],
+                "summary": "Image reports",
+                "operationId": "get_report_reports_image_post",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "object": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "title": "Object"
+                                    }
+                                },
+                                "type": "object",
+                                "required": [
+                                    "object"
+                                ],
+                                "title": "BinaryRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ImageReportResponse"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "HTTPBearer": []
+                    }
+                ]
+            }
         }
-      }
     },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
-      }
+    "components": {
+        "schemas": {
+            "AIONGenerateVerdict": {
+                "type": "string",
+                "enum": [
+                    "ai",
+                    "human"
+                ],
+                "title": "AIONGenerateVerdict",
+                "description": "Generate verdict."
+            },
+            "AIONGeneratorScheme": {
+                "properties": {
+                    "midjourney": {
+                        "$ref": "#/components/schemas/AIONPredictionBase"
+                    },
+                    "dall_e": {
+                        "$ref": "#/components/schemas/AIONPredictionBase"
+                    },
+                    "stable_diffusion": {
+                        "$ref": "#/components/schemas/AIONPredictionBase"
+                    },
+                    "this_person_does_not_exist": {
+                        "$ref": "#/components/schemas/AIONPredictionBase"
+                    },
+                    "adobe_firefly": {
+                        "$ref": "#/components/schemas/AIONPredictionBase"
+                    },
+                    "flux": {
+                        "$ref": "#/components/schemas/AIONPredictionBase"
+                    },
+                    "four_o": {
+                        "$ref": "#/components/schemas/AIONPredictionBase"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "midjourney",
+                    "dall_e",
+                    "stable_diffusion",
+                    "this_person_does_not_exist",
+                    "adobe_firefly",
+                    "flux",
+                    "four_o"
+                ],
+                "title": "AIONGeneratorScheme"
+            },
+            "AIONPredictionBase": {
+                "properties": {
+                    "is_detected": {
+                        "type": "boolean",
+                        "title": "Is Detected"
+                    },
+                    "confidence": {
+                        "type": "number",
+                        "title": "Confidence"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "is_detected",
+                    "confidence"
+                ],
+                "title": "AIONPredictionBase"
+            },
+            "AIONPredictionType2": {
+                "properties": {
+                    "is_detected": {
+                        "type": "boolean",
+                        "title": "Is Detected"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "is_detected"
+                ],
+                "title": "AIONPredictionType2"
+            },
+            "AIONReportSchemeT1": {
+                "properties": {
+                    "verdict": {
+                        "title": "Verdict"
+                    },
+                    "ai": {
+                        "$ref": "#/components/schemas/AIONPredictionBase"
+                    },
+                    "human": {
+                        "$ref": "#/components/schemas/AIONPredictionBase"
+                    },
+                    "generator": {
+                        "$ref": "#/components/schemas/AIONGeneratorScheme"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "verdict",
+                    "ai",
+                    "human",
+                    "generator"
+                ],
+                "title": "AIONReportSchemeT1"
+            },
+            "AIONReportSchemeT2": {
+                "properties": {
+                    "verdict": {
+                        "title": "Verdict"
+                    },
+                    "ai": {
+                        "$ref": "#/components/schemas/AIONPredictionType2"
+                    },
+                    "human": {
+                        "$ref": "#/components/schemas/AIONPredictionType2"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "verdict",
+                    "ai",
+                    "human"
+                ],
+                "title": "AIONReportSchemeT2"
+            },
+            "AudioReportResponse": {
+                "properties": {
+                    "report": {
+                        "$ref": "#/components/schemas/ShareReport"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "report"
+                ],
+                "title": "AudioReportResponse"
+            },
+            "BboxScheme": {
+                "properties": {
+                    "x": {
+                        "type": "number",
+                        "title": "X"
+                    },
+                    "y": {
+                        "type": "number",
+                        "title": "Y"
+                    },
+                    "w": {
+                        "type": "number",
+                        "title": "W"
+                    },
+                    "h": {
+                        "type": "number",
+                        "title": "H"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "x",
+                    "y",
+                    "w",
+                    "h"
+                ],
+                "title": "BboxScheme"
+            },
+            "Body_get_music_report_reports_music_post": {
+                "properties": {
+                    "file": {
+                        "type": "string",
+                        "format": "binary",
+                        "title": "File"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "file"
+                ],
+                "title": "Body_get_music_report_reports_music_post"
+            },
+            "Body_get_voice_report_reports_audio_post": {
+                "properties": {
+                    "object": {
+                        "type": "string",
+                        "format": "binary",
+                        "title": "Object"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "object"
+                ],
+                "title": "Body_get_voice_report_reports_audio_post"
+            },
+            "Body_get_voice_report_reports_voice_post": {
+                "properties": {
+                    "file": {
+                        "type": "string",
+                        "format": "binary",
+                        "title": "File"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "file"
+                ],
+                "title": "Body_get_voice_report_reports_voice_post"
+            },
+            "DeepFakeVerdict": {
+                "type": "string",
+                "enum": [
+                    "deepfake",
+                    "real"
+                ],
+                "title": "DeepFakeVerdict"
+            },
+            "FacetsScheme": {
+                "properties": {
+                    "quality": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/QualityReportScheme"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "nsfw": {
+                        "anyOf": [
+                            {
+                                "oneOf": [
+                                    {
+                                        "$ref": "#/components/schemas/NSFWReportSchemeT1"
+                                    },
+                                    {
+                                        "$ref": "#/components/schemas/NSFWReportSchemeT3"
+                                    },
+                                    {
+                                        "$ref": "#/components/schemas/NSFWReportSchemeT4"
+                                    }
+                                ],
+                                "discriminator": {
+                                    "propertyName": "type",
+                                    "mapping": {
+                                        "t1": "#/components/schemas/NSFWReportSchemeT1",
+                                        "t2": "#/components/schemas/NSFWReportSchemeT1",
+                                        "t3": "#/components/schemas/NSFWReportSchemeT3",
+                                        "t4": "#/components/schemas/NSFWReportSchemeT4"
+                                    }
+                                }
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Nsfw"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "quality",
+                    "nsfw"
+                ],
+                "title": "FacetsScheme"
+            },
+            "HTTPValidationError": {
+                "properties": {
+                    "detail": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        },
+                        "type": "array",
+                        "title": "Detail"
+                    }
+                },
+                "type": "object",
+                "title": "HTTPValidationError"
+            },
+            "ImageDeepFakeReportResponse": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "title": "Id"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created At"
+                    },
+                    "max_confidence": {
+                        "type": "number",
+                        "title": "Max Confidence",
+                        "description": "Field that indicates the maximum confidence of the prediction."
+                    },
+                    "is_detected": {
+                        "type": "boolean",
+                        "title": "Is Detected",
+                        "description": "Field that indicates whether the aion_image was modified with AI or not."
+                    },
+                    "rois": {
+                        "items": {
+                            "$ref": "#/components/schemas/RoiReportScheme"
+                        },
+                        "type": "array",
+                        "title": "Rois",
+                        "description": "Field that contains the list of regions of interest."
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "max_confidence",
+                    "is_detected",
+                    "rois"
+                ],
+                "title": "ImageDeepFakeReportResponse"
+            },
+            "ImageReportResponse": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "title": "Id",
+                        "description": "Unique identifier of the reports."
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created At",
+                        "description": "Date and time when the reports was created."
+                    },
+                    "report": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/AIONReportSchemeT1"
+                            },
+                            {
+                                "$ref": "#/components/schemas/AIONReportSchemeT2"
+                            }
+                        ],
+                        "title": "Report",
+                        "discriminator": {
+                            "propertyName": "type",
+                            "mapping": {
+                                "t1": "#/components/schemas/AIONReportSchemeT1",
+                                "t2": "#/components/schemas/AIONReportSchemeT2",
+                                "t3": "#/components/schemas/AIONReportSchemeT1",
+                                "t4": "#/components/schemas/AIONReportSchemeT1"
+                            }
+                        }
+                    },
+                    "facets": {
+                        "$ref": "#/components/schemas/FacetsScheme"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "report",
+                    "facets"
+                ],
+                "title": "ImageReportResponse"
+            },
+            "LiveStatus": {
+                "properties": {
+                    "is_live": {
+                        "type": "boolean",
+                        "title": "Is Live",
+                        "default": true
+                    }
+                },
+                "type": "object",
+                "title": "LiveStatus",
+                "description": "Indicates that API is live."
+            },
+            "MusicReportResponse": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "title": "Id"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created At"
+                    },
+                    "report": {
+                        "$ref": "#/components/schemas/ShareMusicReport"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "report"
+                ],
+                "title": "MusicReportResponse"
+            },
+            "NSFWReportSchemeT1": {
+                "properties": {
+                    "version": {
+                        "type": "string",
+                        "title": "Version",
+                        "default": "1.0.0"
+                    },
+                    "is_detected": {
+                        "type": "boolean",
+                        "title": "Is Detected",
+                        "description": "True if NSFW found on the aion_image."
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "is_detected"
+                ],
+                "title": "NSFWReportSchemeT1"
+            },
+            "NSFWReportSchemeT3": {
+                "properties": {
+                    "version": {
+                        "type": "string",
+                        "title": "Version",
+                        "default": "1.0.0"
+                    },
+                    "is_detected": {
+                        "type": "boolean",
+                        "title": "Is Detected",
+                        "description": "True if NSFW found on the aion_image."
+                    },
+                    "nipples": {
+                        "$ref": "#/components/schemas/AIONPredictionBase"
+                    },
+                    "genitals": {
+                        "$ref": "#/components/schemas/AIONPredictionBase"
+                    },
+                    "sex_act": {
+                        "$ref": "#/components/schemas/AIONPredictionBase"
+                    },
+                    "kids": {
+                        "$ref": "#/components/schemas/AIONPredictionBase"
+                    },
+                    "semen_condom": {
+                        "$ref": "#/components/schemas/AIONPredictionBase"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "is_detected",
+                    "nipples",
+                    "genitals",
+                    "sex_act",
+                    "kids",
+                    "semen_condom"
+                ],
+                "title": "NSFWReportSchemeT3"
+            },
+            "NSFWReportSchemeT4": {
+                "properties": {
+                    "version": {
+                        "type": "string",
+                        "title": "Version",
+                        "default": "1.0.0"
+                    },
+                    "is_detected": {
+                        "type": "boolean",
+                        "title": "Is Detected"
+                    },
+                    "labels": {
+                        "items": {},
+                        "type": "array",
+                        "title": "Labels"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "is_detected",
+                    "labels"
+                ],
+                "title": "NSFWReportSchemeT4"
+            },
+            "QualityReportScheme": {
+                "properties": {
+                    "is_detected": {
+                        "type": "boolean",
+                        "title": "Is Detected"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "is_detected"
+                ],
+                "title": "QualityReportScheme"
+            },
+            "RoiReportScheme": {
+                "properties": {
+                    "bbox": {
+                        "$ref": "#/components/schemas/BboxScheme"
+                    },
+                    "confidence": {
+                        "type": "number",
+                        "title": "Confidence"
+                    },
+                    "verdict": {
+                        "$ref": "#/components/schemas/DeepFakeVerdict"
+                    },
+                    "is_detected": {
+                        "type": "boolean",
+                        "title": "Is Detected"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "bbox",
+                    "confidence",
+                    "verdict",
+                    "is_detected"
+                ],
+                "title": "RoiReportScheme"
+            },
+            "ShareMusicReport": {
+                "properties": {
+                    "verdict": {
+                        "$ref": "#/components/schemas/AIONGenerateVerdict"
+                    },
+                    "confidence": {
+                        "type": "number",
+                        "title": "Confidence", 
+                        "minimum": 0,
+                        "maximum": 1,
+                        "example": 0.95
+                    },
+                    "duration": {
+                        "type": "integer",
+                        "title": "Duration",
+                        "example": 120
+                    },
+                    "total_bytes": {
+                        "type": "integer",
+                        "title": "Total Bytes",
+                        "example": 362594
+                    },
+                    "md5": {
+                        "type": "string",
+                        "title": "Md5",
+                        "example": "db36d923800f6ca6b7f87cff8a19d1d1"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "verdict",
+                    "confidence",
+                    "duration",
+                    "total_bytes",
+                    "md5"
+                ],
+                "title": "ShareMusicReport"
+            },
+            "ShareReport": {
+                "properties": {
+                    "verdict": {
+                        "$ref": "#/components/schemas/AIONGenerateVerdict"
+                    },
+                    "confidence": {
+                        "type": "number",
+                        "title": "Confidence"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "verdict",
+                    "confidence"
+                ],
+                "title": "ShareReport"
+            },
+            "ShareVoiceReport": {
+                "properties": {
+                    "verdict": {
+                        "$ref": "#/components/schemas/AIONGenerateVerdict"
+                    },
+                    "confidence": {
+                        "type": "number",
+                        "title": "Confidence",
+                        "minimum": 0,
+                        "maximum": 1,
+                        "example": 0.95
+                    },
+                    "duration": {
+                        "type": "integer",
+                        "title": "Duration",
+                        "example": 120
+                    },
+                    "total_bytes": {
+                        "type": "integer",
+                        "title": "Total Bytes",
+                        "example": 362594
+                    },
+                    "md5": {
+                        "type": "string",
+                        "title": "Md5",
+                        "example": "db36d923800f6ca6b7f87cff8a19d1d1"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "verdict",
+                    "confidence",
+                    "duration",
+                    "total_bytes",
+                    "md5"
+                ],
+                "title": "ShareVoiceReport"
+            },
+            "ValidationError": {
+                "properties": {
+                    "loc": {
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        },
+                        "type": "array",
+                        "title": "Location"
+                    },
+                    "msg": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Error Type"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "title": "ValidationError"
+            },
+            "VoiceReportResponse": {
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "title": "Id"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Created At"
+                    },
+                    "report": {
+                        "$ref": "#/components/schemas/ShareVoiceReport"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "id",
+                    "report"
+                ],
+                "title": "VoiceReportResponse"
+            }
+        },
+        "securitySchemes": {
+            "HTTPBearer": {
+                "type": "http",
+                "scheme": "bearer"
+            }
+        }
     }
-  }
 }
