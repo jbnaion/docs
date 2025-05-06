@@ -35,7 +35,7 @@
                                         "type": "string",
                                         "format": "binary",
                                         "title": "Object",
-                                        "description": "The image file to analyze. Must be a valid image file."
+                                        "description": "The image file to analyze.\n - Supported formats: jpg, jpeg, png, webp, heic, heif, tiff.\n- Max file size: 10MB"
                                     }
                                 },
                                 "type": "object",
@@ -43,11 +43,11 @@
                                     "object"
                                 ],
                                 "title": "BinaryRequest"
-                            }
-                        },
-                        "encoding": {
-                            "file": {
-                                "contentType": "image/*"
+                            },
+                            "encoding": {
+                                "object": {
+                                    "contentType": "image/*"
+                                }
                             }
                         }
                     },
