@@ -1,0 +1,100 @@
+---
+title: 'Getting Started'
+description: 'How to get started with the AI or Not API'
+---
+
+## Overview
+
+1. **Create an account:** Visit [aiornot.com](https://aiornot.com) and choose any plan that includes the API access you need.
+2. **Locate your API key:** Once logged in, head to **[API](https://www.aiornot.com/dashboard/api)** tab and click copy the generated key.
+3. **Call appropriate API endpoint**: See the [API Reference](/api-reference) for details.
+
+## Authentication
+
+All permissioned endpoints require the API key as a bearer token in the `Authorization` header. 
+
+<Warning>
+This key is a secret and should be stored securely.
+</Warning>
+
+Think of it like your password. Anyone with access to this key can make requests to the API
+on your behalf, using your quota. Code examples in the [API Reference](/api-reference) show how to
+include the API key in your requests.
+
+## Response Serialization
+
+The API returns JSON responses. [API Reference](/api-reference) shows what that response
+format looks like for each endpoint. However, there is one critical thing to note
+when integrating the API into your application:
+
+<Warning>
+We may add additional fields to existing endpoint responses without changing the API version.
+</Warning>
+
+However, we will never remove or rename a field without releasing a new API version.
+
+Successful integrations must be resilient to new fields. This allows us to add new information
+to responses (e.g. a new image generator classification) without breaking existing integrations.
+
+To make this more concrete, image you are using pydantic in Python to deserialize the response.
+At integration time, you might have code that looks like,
+
+```python
+class ExampleResp(BaseModel):
+    is_ai: bool
+```
+
+which successfully deserializes responses like,
+
+```json
+{
+    "is_ai": true
+}
+```
+
+If we added a new field to the response, e.g.
+
+```json
+{
+    "is_ai": true,
+    "is_upscaled": false
+}
+```
+
+your deserialization code will break unless you had something like,
+
+```python
+class ExampleResp(BaseModel):
+    is_ai: bool
+
+    # Ignore any extra fields in the response
+    model_config = ConfigDict(extra='ignore')  
+```
+
+## Rate Limiting
+
+Depending on your plan, you may be subject to rate limits between
+1 and 5 requests per second.  This limit exists to prevent
+abuse of the API. It is not a technical constraint. If you need
+a higher limit, please [contact us](mailto:support@aiornot.com).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
