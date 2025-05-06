@@ -71,6 +71,10 @@ class ExampleResp(BaseModel):
     model_config = ConfigDict(extra='ignore')  
 ```
 
+Otherwise, please carefully observe which fields are optional (e.g. can be `null`) in particular
+responses. Some endpoints return `null` responses for sub-model errors without failing 
+completely, so long as the primary model was successfully (e.g. `quality` in the image model).
+
 ## Rate Limiting
 
 Depending on your plan, you may be subject to rate limits between

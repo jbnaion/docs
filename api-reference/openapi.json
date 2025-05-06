@@ -34,7 +34,8 @@
                                     "object": {
                                         "type": "string",
                                         "format": "binary",
-                                        "title": "Object"
+                                        "title": "Object",
+                                        "description": "The image file to analyze. Must be a valid image file."
                                     }
                                 },
                                 "type": "object",
@@ -222,25 +223,32 @@
             "AIONGeneratorScheme": {
                 "properties": {
                     "midjourney": {
-                        "$ref": "#/components/schemas/AIONPredictionBase"
+                        "$ref": "#/components/schemas/AIONPredictionBase",
+                        "example": 0.9
                     },
                     "dall_e": {
-                        "$ref": "#/components/schemas/AIONPredictionBase"
+                        "$ref": "#/components/schemas/AIONPredictionBase",
+                        "example": 0.05
                     },
                     "stable_diffusion": {
-                        "$ref": "#/components/schemas/AIONPredictionBase"
+                        "$ref": "#/components/schemas/AIONPredictionBase",
+                        "example": 0.04
                     },
                     "this_person_does_not_exist": {
-                        "$ref": "#/components/schemas/AIONPredictionBase"
+                        "$ref": "#/components/schemas/AIONPredictionBase",
+                        "example": 0.01
                     },
                     "adobe_firefly": {
-                        "$ref": "#/components/schemas/AIONPredictionBase"
+                        "$ref": "#/components/schemas/AIONPredictionBase",
+                        "example": 0.0
                     },
                     "flux": {
-                        "$ref": "#/components/schemas/AIONPredictionBase"
+                        "$ref": "#/components/schemas/AIONPredictionBase",
+                        "example": 0.0
                     },
                     "four_o": {
-                        "$ref": "#/components/schemas/AIONPredictionBase"
+                        "$ref": "#/components/schemas/AIONPredictionBase",
+                        "example": 0.0
                     }
                 },
                 "type": "object",
@@ -253,17 +261,23 @@
                     "flux",
                     "four_o"
                 ],
-                "title": "AIONGeneratorScheme"
+                "title": "AIONGeneratorScheme",
+                "description": "A map of generator names to their prediction base.Please note that\n- This list is not exhaustive. We have trained on more generators than appear here.\n- We may add new generators at any time, so please make sure your integration allows for field addition without error."
             },
             "AIONPredictionBase": {
                 "properties": {
                     "is_detected": {
                         "type": "boolean",
-                        "title": "Is Detected"
+                        "title": "Is Detected",
+                        "description": "Indicates whether the particular class was detected."
                     },
                     "confidence": {
                         "type": "number",
-                        "title": "Confidence"
+                        "title": "Confidence",
+                        "minimum": 0,
+                        "maximum": 1,
+                        "example": 0.95,
+                        "description": "Confidence score for the particular class."
                     }
                 },
                 "type": "object",
@@ -286,16 +300,30 @@
                 ],
                 "title": "AIONPredictionType2"
             },
-            "AIONReportSchemeT1": {
+            "AIONReportScheme": {
                 "properties": {
                     "verdict": {
-                        "title": "Verdict"
+                        "title": "Verdict",
+                        "description": "The predicted class of the uploaded image.\n\nThis is the most important field in the response. This field is more reliable than directly using the confidence score yourself, as the confidence score may drift over time for new models.",
+                        "enum": [
+                            "ai",
+                            "human",
+                            "unknown"
+                        ]
                     },
                     "ai": {
-                        "$ref": "#/components/schemas/AIONPredictionBase"
+                        "$ref": "#/components/schemas/AIONPredictionBase",
+                        "example": {
+                            "is_detected": true,
+                            "confidence": 0.95
+                        }
                     },
                     "human": {
-                        "$ref": "#/components/schemas/AIONPredictionBase"
+                        "$ref": "#/components/schemas/AIONPredictionBase",
+                        "example": {
+                            "is_detected": false,
+                            "confidence": 0.05
+                        }
                     },
                     "generator": {
                         "$ref": "#/components/schemas/AIONGeneratorScheme"
@@ -308,27 +336,7 @@
                     "human",
                     "generator"
                 ],
-                "title": "AIONReportSchemeT1"
-            },
-            "AIONReportSchemeT2": {
-                "properties": {
-                    "verdict": {
-                        "title": "Verdict"
-                    },
-                    "ai": {
-                        "$ref": "#/components/schemas/AIONPredictionType2"
-                    },
-                    "human": {
-                        "$ref": "#/components/schemas/AIONPredictionType2"
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "verdict",
-                    "ai",
-                    "human"
-                ],
-                "title": "AIONReportSchemeT2"
+                "title": "AIONReportScheme"
             },
             "AudioReportResponse": {
                 "properties": {
@@ -435,26 +443,7 @@
                     "nsfw": {
                         "anyOf": [
                             {
-                                "oneOf": [
-                                    {
-                                        "$ref": "#/components/schemas/NSFWReportSchemeT1"
-                                    },
-                                    {
-                                        "$ref": "#/components/schemas/NSFWReportSchemeT3"
-                                    },
-                                    {
-                                        "$ref": "#/components/schemas/NSFWReportSchemeT4"
-                                    }
-                                ],
-                                "discriminator": {
-                                    "propertyName": "type",
-                                    "mapping": {
-                                        "t1": "#/components/schemas/NSFWReportSchemeT1",
-                                        "t2": "#/components/schemas/NSFWReportSchemeT1",
-                                        "t3": "#/components/schemas/NSFWReportSchemeT3",
-                                        "t4": "#/components/schemas/NSFWReportSchemeT4"
-                                    }
-                                }
+                                "$ref": "#/components/schemas/NSFWReportScheme"
                             },
                             {
                                 "type": "null"
@@ -529,33 +518,17 @@
                         "type": "string",
                         "format": "uuid",
                         "title": "Id",
-                        "description": "Unique identifier of the reports."
+                        "description": "Unique identifier associated with the request."
                     },
                     "created_at": {
                         "type": "string",
                         "format": "date-time",
                         "title": "Created At",
-                        "description": "Date and time when the reports was created."
+                        "description": "Date and time of request processing."
                     },
                     "report": {
-                        "oneOf": [
-                            {
-                                "$ref": "#/components/schemas/AIONReportSchemeT1"
-                            },
-                            {
-                                "$ref": "#/components/schemas/AIONReportSchemeT2"
-                            }
-                        ],
-                        "title": "Report",
-                        "discriminator": {
-                            "propertyName": "type",
-                            "mapping": {
-                                "t1": "#/components/schemas/AIONReportSchemeT1",
-                                "t2": "#/components/schemas/AIONReportSchemeT2",
-                                "t3": "#/components/schemas/AIONReportSchemeT1",
-                                "t4": "#/components/schemas/AIONReportSchemeT1"
-                            }
-                        }
+                        "$ref": "#/components/schemas/AIONReportScheme",
+                        "title": "Report"
                     },
                     "facets": {
                         "$ref": "#/components/schemas/FacetsScheme"
@@ -604,7 +577,7 @@
                 ],
                 "title": "MusicReportResponse"
             },
-            "NSFWReportSchemeT1": {
+            "NSFWReportScheme": {
                 "properties": {
                     "version": {
                         "type": "string",
@@ -614,83 +587,21 @@
                     "is_detected": {
                         "type": "boolean",
                         "title": "Is Detected",
-                        "description": "True if NSFW found on the aion_image."
+                        "description": "True if NSFW content found in the image. Please note that for us, the mere presence of a child is enough to trigger this flag. We offer a more granular NSFW report for clients who need it. Please contact us if this describes you."
                     }
                 },
                 "type": "object",
                 "required": [
                     "is_detected"
                 ],
-                "title": "NSFWReportSchemeT1"
-            },
-            "NSFWReportSchemeT3": {
-                "properties": {
-                    "version": {
-                        "type": "string",
-                        "title": "Version",
-                        "default": "1.0.0"
-                    },
-                    "is_detected": {
-                        "type": "boolean",
-                        "title": "Is Detected",
-                        "description": "True if NSFW found on the aion_image."
-                    },
-                    "nipples": {
-                        "$ref": "#/components/schemas/AIONPredictionBase"
-                    },
-                    "genitals": {
-                        "$ref": "#/components/schemas/AIONPredictionBase"
-                    },
-                    "sex_act": {
-                        "$ref": "#/components/schemas/AIONPredictionBase"
-                    },
-                    "kids": {
-                        "$ref": "#/components/schemas/AIONPredictionBase"
-                    },
-                    "semen_condom": {
-                        "$ref": "#/components/schemas/AIONPredictionBase"
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "is_detected",
-                    "nipples",
-                    "genitals",
-                    "sex_act",
-                    "kids",
-                    "semen_condom"
-                ],
-                "title": "NSFWReportSchemeT3"
-            },
-            "NSFWReportSchemeT4": {
-                "properties": {
-                    "version": {
-                        "type": "string",
-                        "title": "Version",
-                        "default": "1.0.0"
-                    },
-                    "is_detected": {
-                        "type": "boolean",
-                        "title": "Is Detected"
-                    },
-                    "labels": {
-                        "items": {},
-                        "type": "array",
-                        "title": "Labels"
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "is_detected",
-                    "labels"
-                ],
-                "title": "NSFWReportSchemeT4"
+                "title": "NSFWReportScheme"
             },
             "QualityReportScheme": {
                 "properties": {
                     "is_detected": {
                         "type": "boolean",
-                        "title": "Is Detected"
+                        "title": "Is Detected",
+                        "description": "Indicates whether the image is of low quality. **Low quality is not a asthetic judgement.** It merely means that there are artifacts present that indicate things like excessive compression or blurring which degrades other classifiers."
                     }
                 },
                 "type": "object",
@@ -879,7 +790,7 @@
             "HTTPBearer": {
                 "type": "http",
                 "scheme": "bearer",
-                "description": "Your API key as the `Bearer` token in the `Authorization` header."
+                "description": "Your [API key](https://www.aiornot.com/dashboard/api) as the `Bearer` token in the `Authorization` header."
             }
         }
     }
