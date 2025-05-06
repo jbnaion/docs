@@ -44,6 +44,11 @@
                                 ],
                                 "title": "BinaryRequest"
                             }
+                        },
+                        "encoding": {
+                            "file": {
+                                "contentType": "image/*"
+                            }
                         }
                     },
                     "required": true
