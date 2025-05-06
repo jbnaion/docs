@@ -650,7 +650,7 @@
                     },
                     "confidence": {
                         "type": "number",
-                        "title": "Confidence", 
+                        "title": "Confidence",
                         "description": "Confidence score for whether this audio file is ai-generated.",
                         "minimum": 0,
                         "maximum": 1,
