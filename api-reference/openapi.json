@@ -53,7 +53,7 @@
                     }
                 },
                 "responses": {
-                    "201": {
+                    "200": {
                         "description": "File uploaded successfully",
                         "content": {
                             "application/json": {
@@ -80,9 +80,6 @@
                                 }
                             }
                         }
-                    },
-                    "400": {
-                        "description": "Invalid request"
                     }
                 }
             }
@@ -132,16 +129,6 @@
                                 }
                             }
                         }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
-                                }
-                            }
-                        }
                     }
                 },
                 "security": [
@@ -176,16 +163,6 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/VoiceReportResponse"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
                                 }
                             }
                         }
@@ -239,16 +216,6 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/MusicReportResponse"
-                                }
-                            }
-                        }
-                    },
-                    "422": {
-                        "description": "Validation Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/HTTPValidationError"
                                 }
                             }
                         }
@@ -535,19 +502,6 @@
                 ],
                 "title": "FacetsScheme"
             },
-            "HTTPValidationError": {
-                "properties": {
-                    "detail": {
-                        "items": {
-                            "$ref": "#/components/schemas/ValidationError"
-                        },
-                        "type": "array",
-                        "title": "Detail"
-                    }
-                },
-                "type": "object",
-                "title": "HTTPValidationError"
-            },
             "ImageDeepFakeReportResponse": {
                 "properties": {
                     "id": {
@@ -808,39 +762,6 @@
                     "md5"
                 ],
                 "title": "ShareVoiceReport"
-            },
-            "ValidationError": {
-                "properties": {
-                    "loc": {
-                        "items": {
-                            "anyOf": [
-                                {
-                                    "type": "string"
-                                },
-                                {
-                                    "type": "integer"
-                                }
-                            ]
-                        },
-                        "type": "array",
-                        "title": "Location"
-                    },
-                    "msg": {
-                        "type": "string",
-                        "title": "Message"
-                    },
-                    "type": {
-                        "type": "string",
-                        "title": "Error Type"
-                    }
-                },
-                "type": "object",
-                "required": [
-                    "loc",
-                    "msg",
-                    "type"
-                ],
-                "title": "ValidationError"
             },
             "VoiceReportResponse": {
                 "properties": {
