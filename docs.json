@@ -18,8 +18,13 @@
             "pages": [
               "index",
               "setup",
-              "a-complete-example",
-              "/api-reference/reports-by-modality/"
+              "a-complete-example"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "api-reference/reports-by-modality/"
             ]
           }
         ]
