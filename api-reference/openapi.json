@@ -18,6 +18,75 @@
         }
     ],
     "paths": {
+        "/test/dummy": {
+            "post": {
+                "tags": [
+                    "Test"
+                ],
+                "summary": "Upload a dummy object",
+                "description": "Accepts a single binary file in the **object** field.\n\nMintlify will generate Python code such as:\n```python\nfiles = {\"object\": open(\"path/to/file\", \"rb\")}\nresponse = requests.post(\"https://your.api/test/dummy\", files=files)\n```\n",
+                "operationId": "uploadDummyObject",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "object": {
+                                        "type": "string",
+                                        "format": "binary",
+                                        "title": "Object",
+                                        "description": "Binary file to upload."
+                                    }
+                                },
+                                "required": [
+                                    "object"
+                                ]
+                            },
+                            "encoding": {
+                                "object": {
+                                    "contentType": "application/octet-stream"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "File uploaded successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string",
+                                            "format": "uuid"
+                                        },
+                                        "filename": {
+                                            "type": "string"
+                                        },
+                                        "size": {
+                                            "type": "integer",
+                                            "format": "int64"
+                                        }
+                                    },
+                                    "required": [
+                                        "id",
+                                        "filename",
+                                        "size"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid request"
+                    }
+                }
+            }
+        },
         "/reports/image": {
             "post": {
                 "tags": [
