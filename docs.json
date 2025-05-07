@@ -17,7 +17,8 @@
             "group": "Get Started",
             "pages": [
               "index",
-              "setup"
+              "setup",
+              "/api-reference/reports-by-modality/"
             ]
           }
         ]
