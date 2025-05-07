@@ -82,6 +82,24 @@ paths:
         labels and confidence scores for particular generators (e.g. Midjourney, DALL-E,
         etc.). Additionally, it returns often-useful facets for image quality and
         NSFW detection.'
+      x-codeSamples:
+        - lang: python
+          label: Python
+          source: |
+            import os, requests
+
+
+            API_KEY=os.getenv("AIORNOT_API_KEY")
+            IMAGE_ENDPOINT = "https://api.ai-or-not.com/v1/reports/image"
+            
+            with open("image.jpeg", "rb") as f:
+                resp = requests.post(
+                    IMAGE_ENDPOINT,
+                    headers={"Authorization": f"Bearer {API_KEY}"},
+                    files={"object": f},
+                )
+              resp.raise_for_status()
+              print(resp.json())
       operationId: get_report_reports_image_post
       requestBody:
         content:
