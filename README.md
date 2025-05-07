@@ -2,6 +2,7 @@
 
 - llms.txt
 - fix code snippets to use requests with `file`
+- upload python pacakge
 
 # Mintlify Starter Kit
 
