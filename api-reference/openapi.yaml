@@ -510,10 +510,10 @@ components:
         is_detected:
           type: boolean
           title: Is Detected
-          description: Indicates whether the image is of low quality. **Low quality
+          description: Indicates whether the image is of high quality. **Low quality (`false`)
             is not a asthetic judgement.** It merely means that there are artifacts
             present that indicate things like excessive compression or blurring which
-            degrades other classifiers.
+            degrades the performance of other classifiers (e.g. ai image detection).
       type: object
       required:
       - is_detected
