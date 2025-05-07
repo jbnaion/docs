@@ -18,6 +18,7 @@
             "pages": [
               "index",
               "setup",
+              "a-complete-example",
               "/api-reference/reports-by-modality/"
             ]
           }

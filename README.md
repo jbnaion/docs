@@ -68,3 +68,9 @@ Install our Github App to auto propagate changes from your repo to your deployme
 
 
 mintlify openapi-check ./api-reference/openapi.json
+
+
+```
+THIS IS A BAD ERROR MESSAGE FOR NOT LOGGED IN!
+{"request_id":"7636c060-9b92-4c26-a2b2-289b4d59da3d","message":"Something went wrong.","error":{"class":"DecodeError","message":"Not enough segments"}}
+```
