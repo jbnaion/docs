@@ -13,63 +13,6 @@ servers:
 - url: https://prod.ai-or-not.com/v1
   description: Production environment
 paths:
-  /test/dummy:
-    post:
-      tags:
-      - Test
-      summary: Upload a dummy object
-      description: 'Accepts a single binary file in the **object** field.
-
-
-        Mintlify will generate Python code such as:
-
-        ```python
-
-        files = {"object": open("path/to/file", "rb")}
-
-        response = requests.post("https://your.api/test/dummy", files=files)
-
-        ```
-
-        '
-      operationId: uploadDummyObject
-      requestBody:
-        required: true
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                object:
-                  type: string
-                  format: binary
-                  title: Object
-                  description: Binary file to upload.
-              required:
-              - object
-            encoding:
-              object:
-                contentType: application/octet-stream
-      responses:
-        '200':
-          description: File uploaded successfully
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  id:
-                    type: string
-                    format: uuid
-                  filename:
-                    type: string
-                  size:
-                    type: integer
-                    format: int64
-                required:
-                - id
-                - filename
-                - size
   /reports/image:
     post:
       tags:
@@ -89,6 +32,7 @@ paths:
             import os, requests
 
 
+            # Set API key ENV variable or replace with your own API key
             API_KEY=os.getenv("AIORNOT_API_KEY")
             IMAGE_ENDPOINT = "https://api.ai-or-not.com/v1/reports/image"
             
@@ -145,6 +89,28 @@ paths:
         **Warning: This endpoint can take up two minutes for long duration audio files
         or if our backend is spinning up additional processing nodes. Please set a
         two minute timeout in your client.**'
+      x-codeSamples:
+        - lang: python
+          label: Python
+          source: |
+            import os, requests
+
+
+            # Set API key ENV variable or replace with your own API key
+            API_KEY = os.getenv("AIORNOT_API_KEY")
+            VOICE_ENDPOINT = "https://api.aiornot.com/v1/reports/voice"
+
+            with open("audio.mp3", "rb") as audio_file:
+                files = {"file": audio_file}
+                resp = requests.post(
+                    VOICE_ENDPOINT, 
+                    headers={"Authorization": f"Bearer {API_KEY}"},
+                    files=files
+                )
+                if resp.status_code != 200:
+                    raise Exception(f"Failed to analyze image: {resp.status_code} {resp.text}")
+
+            print(resp.json())
       operationId: get_voice_report_reports_voice_post
       requestBody:
         content:
@@ -177,6 +143,28 @@ paths:
         **Warning: This endpoint can take up two minutes for long duration audio files
         or if our backend is spinning up additional processing nodes. Please set a
         two minute timeout in your client.**'
+      x-codeSamples:
+        - lang: python
+          label: Python
+          source: |
+            import os, requests
+
+
+            # Set API key ENV variable or replace with your own API key
+            API_KEY = os.getenv("AIORNOT_API_KEY")
+            MUSIC_ENDPOINT = "https://api.aiornot.com/v1/reports/music"
+
+            with open("audio.mp3", "rb") as audio_file:
+                files = {"file": audio_file}
+                resp = requests.post(
+                    MUSIC_ENDPOINT, 
+                    headers={"Authorization": f"Bearer {API_KEY}"},
+                    files=files
+                )
+                if resp.status_code != 200:
+                    raise Exception(f"Failed to analyze image: {resp.status_code} {resp.text}")
+
+            print(resp.json())
       operationId: get_music_report_reports_music_poalysis including confidence scores
         and model-specific insights. Supports common audio formats like MP3, WAVst
       requestBody:
